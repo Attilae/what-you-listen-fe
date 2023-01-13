@@ -7,7 +7,6 @@ import AuthService from "../services/auth.service";
 type Props = {};
 
 type State = {
-  username: string,
   email: string,
   password: string,
   successful: boolean,
@@ -20,7 +19,6 @@ export default class Register extends Component<Props, State> {
     this.handleRegister = this.handleRegister.bind(this);
 
     this.state = {
-      username: "",
       email: "",
       password: "",
       successful: false,
@@ -30,16 +28,6 @@ export default class Register extends Component<Props, State> {
 
   validationSchema() {
     return Yup.object().shape({
-      username: Yup.string()
-        .test(
-          "len",
-          "The username must be between 3 and 20 characters.",
-          (val: any) =>
-            val &&
-            val.toString().length >= 3 &&
-            val.toString().length <= 20
-        )
-        .required("This field is required!"),
       email: Yup.string()
         .email("This is not a valid email.")
         .required("This field is required!"),
@@ -56,8 +44,8 @@ export default class Register extends Component<Props, State> {
     });
   }
 
-  handleRegister(formValue: { username: string; email: string; password: string }) {
-    const { username, email, password } = formValue;
+  handleRegister(formValue: { email: string; password: string }) {
+    const { email, password } = formValue;
 
     this.setState({
       message: "",
@@ -65,7 +53,6 @@ export default class Register extends Component<Props, State> {
     });
 
     AuthService.register(
-      username,
       email,
       password
     ).then(
@@ -95,7 +82,6 @@ export default class Register extends Component<Props, State> {
     const { successful, message } = this.state;
 
     const initialValues = {
-      username: "",
       email: "",
       password: "",
     };
@@ -117,15 +103,7 @@ export default class Register extends Component<Props, State> {
             <Form>
               {!successful && (
                 <div>
-                  <div className="form-group">
-                    <label htmlFor="username"> Username </label>
-                    <Field name="username" type="text" className="form-control" />
-                    <ErrorMessage
-                      name="username"
-                      component="div"
-                      className="alert alert-danger"
-                    />
-                  </div>
+                  
 
                   <div className="form-group">
                     <label htmlFor="email"> Email </label>
